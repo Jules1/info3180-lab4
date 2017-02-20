@@ -61,7 +61,19 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('home'))
 
-
+@app.route('/filelisting')
+def filelisting():
+    if not session.get('logged_in'):
+        abort(401)
+    
+    
+    f=[]
+    rootdir = os.getcwd()
+    for subdir, dirs, files in os.walk(rootdir + './app/static/uploads/'):
+        for file in files:
+            fpath = (os.path.join(subdir, file))
+            f.append(fpath)
+    return render_template('filelisting.html', file_url = f)
 ###
 # The functions below should be applicable to all Flask apps.
 ###
